@@ -17,7 +17,7 @@ const logger = require('./utils/logger');                   // 引用日志组�
 const loader = require('./utils/loader');                   // 路由加载器
 const tools = require('./utils/tools');                     // 工具类
 const app = new Koa();                                      // 创建koa实例化
-const log = logger('face.api');                             // 日志
+const log = logger('park');                                 // 日志
 const Router = require('koa-router');                       // 引用路由模块
 
 // app.use(async (ctx, next) => {                           // 打一条屏显，活跃下气氛
@@ -39,10 +39,6 @@ app.use(bodyparser());                                      // 使用ctx.body解
 app.use(consuming);                                         // 计算耗时中间件
 
 let index = new Router();
-index.get('/', async(ctx)=>{
-    let ip = tools.getIps();
-    await ctx.render('index',{title:'ttt', localip:ip});
-});
 
 
 const root = loader(path.join(__dirname, './routers/api'), '/rest/face/v3');
@@ -50,7 +46,7 @@ const root = loader(path.join(__dirname, './routers/api'), '/rest/face/v3');
 
 app.use(root.routes()).use(root.allowedMethods());          // 加载路由
 
-let server = app.listen(config.server.port);           // 启动http服务
+let server = app.listen(config.server.port);                // 启动http服务
 server.setTimeout(0);                                       // 设置没有超时时间
 log.info({                                                  // 记录系统启动日志
     path: '~',
