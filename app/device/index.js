@@ -3,6 +3,7 @@ import {Map, Marker, NavigationControl, InfoWindow} from 'react-bmap';
 import {Layout, Avatar, Modal, Button} from 'antd';
 import {LeftMenu} from "./leftmenu";
 import MapInit from './mapinit';
+import ParkMarker from './marker';
 import './index.less';
 
 export class Device extends React.Component {
@@ -33,7 +34,7 @@ export class Device extends React.Component {
 
                     <Marker key={"33"}
                             position={{lng: 116.306857, lat: 40.012762}}>
-
+<ParkMarker />
                     </Marker>
                 </Map>
 
