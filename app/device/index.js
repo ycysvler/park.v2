@@ -1,84 +1,54 @@
 import React from 'react';
-import {Map, Marker, NavigationControl, InfoWindow} from 'react-bmap';
-import {Layout, Avatar, Modal, Button} from 'antd';
+import {Map, Marker} from 'react-bmap';
+import {Layout} from 'antd';
 import {LeftMenu} from "./leftmenu";
 import MapInit from './mapinit';
 import ParkMarker from './marker';
+import {DeviceActions, DeviceStore} from '../logic/device';
 import './index.less';
 
 export class Device extends React.Component {
     constructor(props) {
         super(props);
 
+        this.unsubscribe_device = DeviceStore.listen(this.onStatusChange.bind(this));
+
         this.state = {
             center: {lng: 116.306857, lat: 40.012762},
-            active_alarm: null,
-            active_police: null,
-            active_station: null,
-            create_alarm: false,
-            create_police: false,
-            create_station: false,
-            alarms: [],
-            polices: [],
-            stations: [],
-            question:{
-                show:true,
-                items:[{id:'question_001', lng: 116.318283, lat: 40.006255},{id:'question_002', lng: 116.321732, lat: 40.012293}]
-            },
-            car:{
-                show:true,
-                items:[{id:'car_001', lng: 116.31045, lat: 40.006573},{id:'car_002', lng: 116.315031, lat: 40.005495},{id:'car_002', lng: 116.320044, lat: 40.007056}]
-            },
-            insurance:{
-                show:true,
-                items:[{id:'insurance_001', lng: 116.303066, lat: 40.010552},{id:'insurance_002', lng: 116.323385, lat: 40.008272},{id:'insurance_003', lng: 116.307306, lat: 40.008383}]
-            },
-            alert:{
-                show:true,
-                items:[{id:'alert_001', lng: 116.312444, lat: 40.008977}]
-            },
-            coffee:{
-                show:true,
-                items:[{id:'coffee_001', lng: 116.316989, lat: 40.018026}]
-            },
-            sound:{
-                show:true,
-                items:[{id:'sound_001', lng: 116.307827, lat: 40.013591}]
-            },
-            service:{
-                show:true,
-                items:[{id:'service_001', lng: 116.306946, lat: 40.01268}]
-            },
-            youtube:{
-                show:true,
-                items:[{id:'youtube_001', lng: 116.314456, lat: 40.01739}]
-            },
-            laptop:{
-                show:true,
-                items:[{id:'laptop_001', lng: 116.315696, lat: 40.012666}]
-            },
-            wc:{
-                show:true,
-                items:[{id:'wc_001', lng: 116.317061, lat: 40.011022}]
-            },
-            project:{
-                show:true,
-                items:[{id:'wc_001', lng: 116.302994, lat: 40.01337}]
-            },
-            wifi:{
-                show:true,
-                items:[{id:'alert_001', lng: 116.320205, lat: 40.010939}]
-            },
-            shop:{
-                show:true,
-                items:[{id:'shop_001', lng: 116.308348, lat: 40.0104},{id:'shop_002', lng: 116.323385, lat: 40.008272},{id:'shop_003', lng: 116.307306, lat: 40.008383}]
-            },
-            idcard:{
-                show:true,
-                items:[{id:'idcard_001', lng: 116.307647, lat: 40.011215},{id:'idcard_002', lng: 116.315929, lat: 40.00555}]
-            }
+            question: {show: true, items: []},
+            car: {show: true, items: []},
+            insurance: {show: true, items: []},
+            alert: {show: true, items: []},
+            coffee: {show: true, items: []},
+            sound: {show: true, items: []},
+            service: {show: true, items: []},
+            youtube: {show: true, items: []},
+            laptop: {show: true, items: []},
+            wc: {show: true, items: []},
+            project: {show: true, items: []},
+            wifi: {show: true, items: []},
+            shop: {show: true, items: []},
+            idcard: {show: true, items: []}
         };
+
     }
+
+    componentWillUnmount() {
+        this.unsubscribe_device();
+    }
+
+    componentWillMount() {
+        DeviceActions.getDevices();
+    }
+
+    onStatusChange = (type, data) => {
+        switch (type) {
+            case "getDevices":
+            case "showDevice":
+                this.setState({...data.data});
+                break;
+        }
+    };
 
     render() {
         let self = this;
@@ -88,130 +58,130 @@ export class Device extends React.Component {
                     <MapInit/>
                     {
                         // 游客服务中心
-                        this.state.question.show ? this.state.question.items.map((item)=>{
+                        this.state.question.show ? this.state.question.items.map((item) => {
                                 return <Marker key={item.id}
                                                position={{lng: item.lng, lat: item.lat}}>
-                                    <ParkMarker type="question" />
+                                    <ParkMarker type="question"/>
                                 </Marker>
-                            }):null
+                            }) : null
                     }
                     {
                         // 停車場
-                        this.state.car.show ? this.state.car.items.map((item)=>{
-                            return <Marker key={item.id}
-                                    position={{lng: item.lng, lat: item.lat}}>
-                                <ParkMarker type="car" />
-                            </Marker>
-                        }):null
+                        this.state.car.show ? this.state.car.items.map((item) => {
+                                return <Marker key={item.id}
+                                               position={{lng: item.lng, lat: item.lat}}>
+                                    <ParkMarker type="car"/>
+                                </Marker>
+                            }) : null
                     }
                     {
                         // 保安
-                        this.state.insurance.show ? this.state.insurance.items.map((item)=>{
+                        this.state.insurance.show ? this.state.insurance.items.map((item) => {
                                 return <Marker key={item.id}
                                                position={{lng: item.lng, lat: item.lat}}>
-                                    <ParkMarker type="insurance" />
+                                    <ParkMarker type="insurance"/>
                                 </Marker>
-                            }):null
+                            }) : null
                     }
                     {
                         // 報警
-                        this.state.alert.show ? this.state.alert.items.map((item)=>{
+                        this.state.alert.show ? this.state.alert.items.map((item) => {
                                 return <Marker key={item.id}
                                                position={{lng: item.lng, lat: item.lat}}>
-                                    <ParkMarker type="alert" />
+                                    <ParkMarker type="alert"/>
                                 </Marker>
-                            }):null
+                            }) : null
                     }
 
                     {
                         // wifi
-                        this.state.wifi.show ? this.state.wifi.items.map((item)=>{
+                        this.state.wifi.show ? this.state.wifi.items.map((item) => {
                                 return <Marker key={item.id}
                                                position={{lng: item.lng, lat: item.lat}}>
-                                    <ParkMarker type="wifi" />
+                                    <ParkMarker type="wifi"/>
                                 </Marker>
-                            }):null
+                            }) : null
                     }
                     {
                         // 茶室/咖啡
-                        this.state.coffee.show ? this.state.coffee.items.map((item)=>{
+                        this.state.coffee.show ? this.state.coffee.items.map((item) => {
                                 return <Marker key={item.id}
                                                position={{lng: item.lng, lat: item.lat}}>
-                                    <ParkMarker type="coffee" />
+                                    <ParkMarker type="coffee"/>
                                 </Marker>
-                            }):null
+                            }) : null
                     }
                     {
                         // 智能广播
-                        this.state.sound.show ? this.state.sound.items.map((item)=>{
+                        this.state.sound.show ? this.state.sound.items.map((item) => {
                                 return <Marker key={item.id}
                                                position={{lng: item.lng, lat: item.lat}}>
-                                    <ParkMarker type="sound" />
+                                    <ParkMarker type="sound"/>
                                 </Marker>
-                            }):null
+                            }) : null
                     }
                     {
                         // 语音导游
-                        this.state.service.show ? this.state.service.items.map((item)=>{
+                        this.state.service.show ? this.state.service.items.map((item) => {
                                 return <Marker key={item.id}
                                                position={{lng: item.lng, lat: item.lat}}>
-                                    <ParkMarker type="service" />
+                                    <ParkMarker type="service"/>
                                 </Marker>
-                            }):null
+                            }) : null
                     }
                     {
                         // 大屏导览
-                        this.state.youtube.show ? this.state.youtube.items.map((item)=>{
+                        this.state.youtube.show ? this.state.youtube.items.map((item) => {
                                 return <Marker key={item.id}
                                                position={{lng: item.lng, lat: item.lat}}>
-                                    <ParkMarker type="youtube" />
+                                    <ParkMarker type="youtube"/>
                                 </Marker>
-                            }):null
+                            }) : null
                     }
                     {
                         // 互动屏幕
-                        this.state.laptop.show ? this.state.laptop.items.map((item)=>{
+                        this.state.laptop.show ? this.state.laptop.items.map((item) => {
                                 return <Marker key={item.id}
                                                position={{lng: item.lng, lat: item.lat}}>
-                                    <ParkMarker type="laptop" />
+                                    <ParkMarker type="laptop"/>
                                 </Marker>
-                            }):null
+                            }) : null
                     }
                     {
                         // 卫生间
-                        this.state.wc.show ? this.state.wc.items.map((item)=>{
+                        this.state.wc.show ? this.state.wc.items.map((item) => {
                                 return <Marker key={item.id}
                                                position={{lng: item.lng, lat: item.lat}}>
-                                    <ParkMarker type="wc" />
+                                    <ParkMarker type="wc"/>
                                 </Marker>
-                            }):null
+                            }) : null
                     }
                     {
                         // 景区管道
-                        this.state.project.show ? this.state.project.items.map((item)=>{
+                        this.state.project.show ? this.state.project.items.map((item) => {
                                 return <Marker key={item.id}
                                                position={{lng: item.lng, lat: item.lat}}>
-                                    <ParkMarker type="project" />
+                                    <ParkMarker type="project"/>
                                 </Marker>
-                            }):null
+                            }) : null
                     }
                     {
                         // 商店
-                        this.state.shop.show ? this.state.shop.items.map((item)=>{
+                        this.state.shop.show ? this.state.shop.items.map((item) => {
                                 return <Marker key={item.id}
                                                position={{lng: item.lng, lat: item.lat}}>
-                                    <ParkMarker type="shop" />
+                                    <ParkMarker type="shop"/>
                                 </Marker>
-                            }):null
+                            }) : null
                     }
                     {
                         // 票务服务
-                        this.state.idcard.show ? this.state.idcard.items.map((item)=>{
+                        this.state.idcard.show ? this.state.idcard.items.map((item) => {
                                 return <Marker key={item.id}
                                                position={{lng: item.lng, lat: item.lat}}>
-                                    <ParkMarker type="idcard" />
+                                    <ParkMarker type="idcard"/>
                                 </Marker>
-                            }):null
+                            }) : null
                     }
                 </Map>
 
