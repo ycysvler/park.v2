@@ -4,7 +4,7 @@ import {HashRouter as Router,Link, Switch, Route} from 'react-router-dom';
 import NotFound from '../notfound';
 import './main.less';
 import {Device} from '../device/index';
-
+import {Tourist} from '../tourist/index';
 
 const SubMenu = Menu.SubMenu;
 const {Header, Content, Sider} = Layout;
@@ -12,6 +12,15 @@ const {Header, Content, Sider} = Layout;
 export default class CentrePlatform extends React.Component {
     constructor(props) {
         super(props);
+        let selectKey = "";
+        if(window.location.href.indexOf('device') > -1){
+            selectKey = 'device';
+        }
+        if(window.location.href.indexOf('tourist') > -1){
+            selectKey = 'tourist';
+        }
+
+        this.state = {selectKey:selectKey};
     }
     componentWillUnmount() {
     }
@@ -28,13 +37,15 @@ export default class CentrePlatform extends React.Component {
                         <Layout style={{"background": "white"}}>
                             <Content>
                                 <Menu
+                                    defaultSelectedKeys={[this.state.selectKey]}
+
                                     style={{flexGrow: 1, lineHeight:'62px'}}
                                     mode="horizontal"
                                 >
                                     <Menu.Item key="app">
                                         <Link to='/main/home'>景点游玩</Link>
                                     </Menu.Item>
-                                    <Menu.Item key="01">
+                                    <Menu.Item key="device">
                                         <Link to='/main/device'>景区设施</Link>
                                     </Menu.Item>
                                     <Menu.Item key="02">
@@ -46,10 +57,10 @@ export default class CentrePlatform extends React.Component {
                                     <Menu.Item key="04">
                                         <Link to='/main/business'>环境监控</Link>
                                     </Menu.Item>
-                                    <Menu.Item key="05">
-                                        <Link to='/main/business'>客流分析</Link>
+                                    <Menu.Item key="tourist">
+                                        <Link to='/main/tourist'>客流分析</Link>
                                     </Menu.Item>
-                                    <Menu.Item key="06">
+                                    <Menu.Item key="business">
                                         <Link to='/main/business'>基础数据</Link>
                                     </Menu.Item>
                                     <Menu.Item key="07">
@@ -70,6 +81,7 @@ export default class CentrePlatform extends React.Component {
                     <Router>
                         <Switch>
                             <Route strict path="/main/device" component={Device}/>
+                            <Route strict path="/main/tourist" component={Tourist}/>
                             <Route component={NotFound}/>
                         </Switch>
                     </Router>
