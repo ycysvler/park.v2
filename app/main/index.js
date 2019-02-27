@@ -42,9 +42,9 @@ export default class CentrePlatform extends React.Component {
                                     style={{flexGrow: 1, lineHeight:'62px'}}
                                     mode="horizontal"
                                 >
-                                    <Menu.Item key="app">
-                                        <Link to='/main/home'>景点游玩</Link>
-                                    </Menu.Item>
+                                    {/*<Menu.Item key="app">*/}
+                                        {/*<Link to='/main/home'>景点游玩</Link>*/}
+                                    {/*</Menu.Item>*/}
                                     <Menu.Item key="device">
                                         <Link to='/main/device'>景区设施</Link>
                                     </Menu.Item>
@@ -80,6 +80,7 @@ export default class CentrePlatform extends React.Component {
                 <Layout >
                     <Router>
                         <Switch>
+                            <Route exact path="/main" component={Device}/>
                             <Route strict path="/main/device" component={Device}/>
                             <Route strict path="/main/tourist" component={Tourist}/>
                             <Route component={NotFound}/>
