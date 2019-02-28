@@ -5,6 +5,8 @@ import NotFound from '../notfound';
 import './main.less';
 import {Device} from '../device/index';
 import {Tourist} from '../tourist/index';
+import {Monitor} from '../monitor/index';
+import {Parking} from '../parking/index';
 
 const SubMenu = Menu.SubMenu;
 const {Header, Content, Sider} = Layout;
@@ -19,6 +21,12 @@ export default class CentrePlatform extends React.Component {
         if(window.location.href.indexOf('tourist') > -1){
             selectKey = 'tourist';
         }
+        if(window.location.href.indexOf('monitor') > -1){
+            selectKey = 'monitor';
+        }
+        if(window.location.href.indexOf('parking') > -1){
+            selectKey = 'parking';
+        }
 
         this.state = {selectKey:selectKey};
     }
@@ -30,15 +38,15 @@ export default class CentrePlatform extends React.Component {
             <Layout className="main-root">
                 <Header style={{height:64}} className="header">
 
-                    <div className="logo" >
+                    <div className="logo">
                         <Avatar style={{marginRight: 16}} size={60}
                                                    src="./icons/icon_logo.png"/>智慧园区管理平台</div>
                     <div style={{float: 'right'}}>
-                        <Layout style={{"background": "white"}}>
-                            <Content>
+                        <Layout >
+                            <Content style={{background:'#001529'}}>
                                 <Menu
                                     defaultSelectedKeys={[this.state.selectKey]}
-
+                                    theme="dark"
                                     style={{flexGrow: 1, lineHeight:'62px'}}
                                     mode="horizontal"
                                 >
@@ -48,11 +56,11 @@ export default class CentrePlatform extends React.Component {
                                     <Menu.Item key="device">
                                         <Link to='/main/device'>景区设施</Link>
                                     </Menu.Item>
-                                    <Menu.Item key="02">
-                                        <Link to='/main/face'>视频监控</Link>
+                                    <Menu.Item key="monitor">
+                                        <Link to='/main/monitor'>视频监控</Link>
                                     </Menu.Item>
-                                    <Menu.Item key="03">
-                                        <Link to='/main/business'>停车场</Link>
+                                    <Menu.Item key="parking">
+                                        <Link to='/main/parking'>停车场</Link>
                                     </Menu.Item>
                                     <Menu.Item key="04">
                                         <Link to='/main/business'>环境监控</Link>
@@ -70,8 +78,8 @@ export default class CentrePlatform extends React.Component {
                                 </Menu>
                             </Content>
                             <Sider width={160} className="box"
-                                   style={{background: '#fff', height: '64px', justifyContent: 'flex-end'}}>
-                                <Button style={{"background": "#fff", "border": "none"}} icon="question-circle-o"
+                                   style={{ height: '64px', justifyContent: 'flex-end'}}>
+                                <Button style={{"background": "#1890ff", "border": "none", "color":"rgba(255, 255, 255, 0.65)"}} icon="question-circle-o"
                                         size="small" className="header-help">帮助</Button>
                             </Sider>
                         </Layout>
@@ -83,6 +91,9 @@ export default class CentrePlatform extends React.Component {
                             <Route exact path="/main" component={Device}/>
                             <Route strict path="/main/device" component={Device}/>
                             <Route strict path="/main/tourist" component={Tourist}/>
+                            <Route strict path="/main/monitor" component={Monitor}/>
+                            <Route strict path="/main/parking" component={Parking}/>
+
                             <Route component={NotFound}/>
                         </Switch>
                     </Router>

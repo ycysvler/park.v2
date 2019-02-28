@@ -1,7 +1,7 @@
 import React from 'react';
 import {Tag} from 'antd';
 import {Map, Marker} from 'react-bmap';
-import MapInit from '../device/mapinit';
+import MapInit from './mapinit';
 import echarts from 'echarts/lib/echarts';
 // 引入柱状图
 import  'echarts/lib/chart/bar';
@@ -422,9 +422,9 @@ export class Tourist extends React.Component {
                     <div className="col">
                         <div className="card">
                             <div className="chart">
-                                <Map mapStyle={{style: 'midnight'}}
+                                <Map
                                      style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0}}
-                                     center={{lng: this.state.center.lng, lat: this.state.center.lat}} zoom="16">
+                                     center={{lng: this.state.center.lng, lat: this.state.center.lat}} zoom="19">
                                     <MapInit/>
                                 </Map>
                                 <div className="total">
@@ -447,8 +447,6 @@ export class Tourist extends React.Component {
                             <div className="chart" ref="weektourist"></div>
                         </div>
                     </div>
-
-
                 </div>
                 <div className="row">
                     <div className="col">
@@ -472,8 +470,6 @@ export class Tourist extends React.Component {
                         </div>
                     </div>
                 </div>
-
-
             </div>
         );
     }
